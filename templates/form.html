@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>HAYES AND FINCH</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        input[type=text] {
+         background-color: #DBF3FA;
+        }
+        form {
+
+        }
+        label {
+          display: inline-block;
+          width: 200px;
+        }
+        input {
+          display: inline-block;
+        }
+    </style>
+
+</head>
+<body>
+   <img src="{{url_for('static', filename='/hayes.png')}}", align="center" height="100" />
+    <form action="/get" method=post enctype=multipart/form-data>
+      <div class="form-group">
+                <h1 class="panel-title" align="center" style="font-weight: bold">DEVELOPMENT CONTAINER CANDLE BURN TEST</h1><br>
+                <div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button>
+                </div>
+            <fieldset>
+            <legend>
+                <div class="container" align="center">
+                <label for="DESCRIPTION">DESCRIPTION</label>
+                <input type="text" id="description" name="description" required>
+                <label for="CONTAINER_TYPE">CONTAINER TYPE</label>
+                <input type="text" id="container_type" name="container_type" required><br/>
+                <label for="PRODUCT_CODE">PRODUCT CODE</label>
+                <input type="text" id="product_code" name="product_code" required>&nbsp;&nbsp;
+                <label>FRAGRANCE <br/> TYPE+%</label>
+                <input type="text" id="fragnance_type" name="fragnance_type" required><br/>
+                <label for="CUSTOMER">CUSTOMER</label>
+                <input type="text" id="customer" name="customer" required>&nbsp;&nbsp;&nbsp;
+                <label for="WAX_TYPE">WAX TYPE</label>
+                <input type="text" id="wax_type" name="wax_type" required><br/>
+                <label>PRODUCTION QTY</label>
+                <input type="text" id="production_quantity" name="production_quantity" required>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="SUSTAINER_TYPE">SUSTAINER TYPE</label>
+                <input type="text" id="sustainer_type" name="sustainer_type" required><br/>
+                </div>
+            </legend>
+            </fieldset>
+          <fieldset>
+            <legend>
+                <div class="form-group" align="center">
+                <label>Time</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="time1" name="time1" size="2">
+                <input type="text" id="time2" name="time2" size="2">
+                <input type="text" id="time3" name="time3" size="2">
+                <input type="text" id="time4" name="time4" size="2">
+                <input type="text" id="time5" name="time5" size="2">
+                <input type="text" id="time6" name="time6" size="2">
+                <input type="text" id="time7" name="time7" size="2">
+                <input type="text" id="time8" name="time8" size="2">
+                <input type="text" id="time9" name="time9" size="2">
+                <input type="text" id="time10" name="time10" size="2">
+                <input type="text" id="time11" name="time11" size="2">
+                <input type="text" id="time12" name="time12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Wick</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input style="background-color:#DEDEDE;" type="text" id="0HR" value="0HR" readonly="readonly" size="2">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="4HR" value="4HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="8HR" value="8HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="12HR" value="12HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="16HR" value="16HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="20HR" value="20HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="24HR" value="24HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="28HR" value="28HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="32HR" value="32HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="36HR" value="36HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="40HR" value="40HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="TBH" value="TBH" readonly="readonly"><br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Flame  <br/>Height</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="flame1" name="flame1" size="2">
+                <input type="text" id="flame2" name="flame2" size="2">
+                <input type="text" id="flame3" name="flame3" size="2">
+                <input type="text" id="flame4" name="flame4" size="2">
+                <input type="text" id="flame5" name="flame5" size="2">
+                <input type="text" id="flame6" name="flame6" size="2">
+                <input type="text" id="flame7" name="flame7" size="2">
+                <input type="text" id="flame8" name="flame8" size="2">
+                <input type="text" id="flame9" name="flame9" size="2">
+                <input type="text" id="flame10" name="flame10" size="2">
+                <input type="text" id="flame11" name="flame11" size="2">
+                <input type="text" id="flame12" name="flame12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Below  <br/>Tolerance</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="tolerance1" name="tolerance1" size="2">
+                <input type="text" id="tolerance2" name="tolerance2" size="2">
+                <input type="text" id="tolerance3" name="tolerance3" size="2">
+                <input type="text" id="tolerance4" name="tolerance4" size="2">
+                <input type="text" id="tolerance5" name="tolerance5" size="2">
+                <input type="text" id="tolerance6" name="tolerance6" size="2">
+                <input type="text" id="tolerance7" name="tolerance7" size="2">
+                <input type="text" id="tolerance8" name="tolerance8" size="2">
+                <input type="text" id="tolerance9" name="tolerance9" size="2">
+                <input type="text" id="tolerance10" name="tolerance10" size="2">
+                <input type="text" id="tolerance11" name="tolerance11" size="2">
+                <input type="text" id="tolerance12" name="tolerance12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Acceptable<br/>: xxmm</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="accept1" name="accept1" size="2">
+                <input type="text" id="accept2" name="accept2" size="2">
+                <input type="text" id="accept3" name="accept3" size="2">
+                <input type="text" id="accept4" name="accept4" size="2">
+                <input type="text" id="accept5" name="accept5" size="2">
+                <input type="text" id="accept6" name="accept6" size="2">
+                <input type="text" id="accept7" name="accept7" size="2">
+                <input type="text" id="accept8" name="accept8" size="2">
+                <input type="text" id="accept9" name="accept9" size="2">
+                <input type="text" id="accept10" name="accept10" size="2">
+                <input type="text" id="accept11" name="accept11" size="2">
+                <input type="text" id="accept12" name="accept12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Above  <br/>Tolerance</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="above1" name="above1" size="2">
+                <input type="text" id="above2" name="above2" size="2">
+                <input type="text" id="above3" name="above3" size="2">
+                <input type="text" id="above4" name="above4" size="2">
+                <input type="text" id="above5" name="above5" size="2">
+                <input type="text" id="above6" name="above6" size="2">
+                <input type="text" id="above7" name="above7" size="2">
+                <input type="text" id="above8" name="above8" size="2">
+                <input type="text" id="above9" name="above9" size="2">
+                <input type="text" id="above10" name="above10" size="2">
+                <input type="text" id="above11" name="above11" size="2">
+                <input type="text" id="above12" name="above12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Wick <br/>Needs <br/> Trimming?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="trim1" name="trim1" size="2">
+                <input type="text" id="trim2" name="trim2" size="2">
+                <input type="text" id="trim3" name="trim3" size="2">
+                <input type="text" id="trim4" name="trim4" size="2">
+                <input type="text" id="trim5" name="trim5" size="2">
+                <input type="text" id="trim6" name="trim6" size="2">
+                <input type="text" id="trim7" name="trim7" size="2">
+                <input type="text" id="trim8" name="trim8" size="2">
+                <input type="text" id="trim9" name="trim9" size="2">
+                <input type="text" id="trim10" name="trim10" size="2">
+                <input type="text" id="trim11" name="trim11" size="2">
+                <input type="text" id="trim12" name="trim12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Evidence <br/> of <br/>Sooting?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="evidence1" name="evidence1" size="2">
+                <input type="text" id="evidence2" name="evidence2" size="2">
+                <input type="text" id="evidence3" name="evidence3" size="2">
+                <input type="text" id="evidence4" name="evidence4" size="2">
+                <input type="text" id="evidence5" name="evidence5" size="2">
+                <input type="text" id="evidence6" name="evidence6" size="2">
+                <input type="text" id="evidence7" name="evidence7" size="2">
+                <input type="text" id="evidence8" name="evidence8" size="2">
+                <input type="text" id="evidence9" name="evidence9" size="2">
+                <input type="text" id="evidence10" name="evidence10" size="2">
+                <input type="text" id="evidence11" name="evidence11" size="2">
+                <input type="text" id="evidence12" name="evidence12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Candle <br/> Tunnel? <br/> Y / N </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="tunnel1" name="tunnel1" size="2">
+                <input type="text" id="tunnel2" name="tunnel2" size="2">
+                <input type="text" id="tunnel3" name="tunnel3" size="2">
+                <input type="text" id="tunnel4" name="tunnel4" size="2">
+                <input type="text" id="tunnel5" name="tunnel5" size="2">
+                <input type="text" id="tunnel6" name="tunnel6" size="2">
+                <input type="text" id="tunnel7" name="tunnel7" size="2">
+                <input type="text" id="tunnel8" name="tunnel8" size="2">
+                <input type="text" id="tunnel9" name="tunnel9" size="2">
+                <input type="text" id="tunnel10" name="tunnel10" size="2">
+                <input type="text" id="tunnel11" name="tunnel11" size="2">
+                <input type="text" id="tunnel12" name="tunnel12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Clubbing <br/> MIN/ <br/>MAX</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="club1" name="club1" size="2">
+                <input type="text" id="club2" name="club2" size="2">
+                <input type="text" id="club3" name="club3" size="2">
+                <input type="text" id="club4" name="club4" size="2">
+                <input type="text" id="club5" name="club5" size="2">
+                <input type="text" id="club6" name="club6" size="2">
+                <input type="text" id="club7" name="club7" size="2">
+                <input type="text" id="club8" name="club8" size="2">
+                <input type="text" id="club9" name="club9" size="2">
+                <input type="text" id="club10" name="club10" size="2">
+                <input type="text" id="club11" name="club11" size="2">
+                <input type="text" id="club12" name="club12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Melt <br/> pool <br/>diameter</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="melt1" name="melt1" size="2">
+                <input type="text" id="melt2" name="melt2" size="2">
+                <input type="text" id="melt3" name="melt3" size="2">
+                <input type="text" id="melt4" name="melt4" size="2">
+                <input type="text" id="melt5" name="melt5" size="2">
+                <input type="text" id="melt6" name="melt6" size="2">
+                <input type="text" id="melt7" name="melt7" size="2">
+                <input type="text" id="melt8" name="melt8" size="2">
+                <input type="text" id="melt9" name="melt9" size="2">
+                <input type="text" id="melt10" name="melt10" size="2">
+                <input type="text" id="melt11" name="melt11" size="2">
+                <input type="text" id="melt12" name="melt12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Afterglow within <br/> Tolerance? <br/>(<20 secs <br/> after extinguishing)</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="afterglow1" name="afterglow1" size="2">
+                <input type="text" id="afterglow2" name="afterglow2" size="2">
+                <input type="text" id="afterglow3" name="afterglow3" size="2">
+                <input type="text" id="afterglow4" name="afterglow4" size="2">
+                <input type="text" id="afterglow5" name="afterglow5" size="2">
+                <input type="text" id="afterglow6" name="afterglow6" size="2">
+                <input type="text" id="afterglow7" name="afterglow7" size="2">
+                <input type="text" id="afterglow8" name="afterglow8" size="2">
+                <input type="text" id="afterglow9" name="afterglow9" size="2">
+                <input type="text" id="afterglow10" name="afterglow10" size="2">
+                <input type="text" id="afterglow11" name="afterglow11" size="2">
+                <input type="text" id="afterglow12" name="afterglow12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Candle <br/> Weight <br/> (g)?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="candle_weight1" name="candle_weight1" size="2">
+                <input type="text" id="candle_weight2" name="candle_weight2" size="2">
+                <input type="text" id="candle_weight3" name="candle_weight3" size="2">
+                <input type="text" id="candle_weight4" name="candle_weight4" size="2">
+                <input type="text" id="candle_weight5" name="candle_weight5" size="2">
+                <input type="text" id="candle_weight6" name="candle_weight6" size="2">
+                <input type="text" id="candle_weight7" name="candle_weight7" size="2">
+                <input type="text" id="candle_weight8" name="candle_weight8" size="2">
+                <input type="text" id="candle_weight9" name="candle_weight9" size="2">
+                <input type="text" id="candle_weight10" name="candle_weight10" size="2">
+                <input type="text" id="candle_weight11" name="candle_weight11" size="2">
+                <input type="text" id="candle_weight12" name="candle_weight12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Burn <br/> Rate <br/> (g/hr)?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="burn_rate1" name="burn_rate1" size="2">
+                <input type="text" id="burn_rate2" name="burn_rate2" size="2">
+                <input type="text" id="burn_rate3" name="burn_rate3" size="2">
+                <input type="text" id="burn_rate4" name="burn_rate4" size="2">
+                <input type="text" id="burn_rate5" name="burn_rate5" size="2">
+                <input type="text" id="burn_rate6" name="burn_rate6" size="2">
+                <input type="text" id="burn_rate7" name="burn_rate7" size="2">
+                <input type="text" id="burn_rate8" name="burn_rate8" size="2">
+                <input type="text" id="burn_rate9" name="burn_rate9" size="2">
+                <input type="text" id="burn_rate10" name="burn_rate10" size="2">
+                <input type="text" id="burn_rate11" name="burn_rate11" size="2">
+                <input type="text" id="burn_rate12" name="burn_rate12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Room Temp <br/> Start of test</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="temp_start1" name="temp_start1" size="2">
+                <input type="text" id="temp_start2" name="temp_start2" size="2">
+                <input type="text" id="temp_start3" name="temp_start3" size="2">
+                <input type="text" id="temp_start4" name="temp_start4" size="2">
+                <input type="text" id="temp_start5" name="temp_start5" size="2">
+                <input type="text" id="temp_start6" name="temp_start6" size="2">
+                <input type="text" id="temp_start7" name="temp_start7" size="2">
+                <input type="text" id="temp_start8" name="temp_start8" size="2">
+                <input type="text" id="temp_start9" name="temp_start9" size="2">
+                <input type="text" id="temp_start10" name="temp_start10" size="2">
+                <input type="text" id="temp_start11" name="temp_start11" size="2">
+                <input type="text" id="temp_start12" name="temp_start12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Room Temp <br/> End of test </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="temp_end1" name="temp_end1" size="2">
+                <input type="text" id="temp_end2" name="temp_end2" size="2">
+                <input type="text" id="temp_end3" name="temp_end3" size="2">
+                <input type="text" id="temp_end4" name="temp_end4" size="2">
+                <input type="text" id="temp_end5" name="temp_end5" size="2">
+                <input type="text" id="temp_end6" name="temp_end6" size="2">
+                <input type="text" id="temp_end7" name="temp_end7" size="2">
+                <input type="text" id="temp_end8" name="temp_end8" size="2">
+                <input type="text" id="temp_end9" name="temp_end9" size="2">
+                <input type="text" id="temp_end10" name="temp_end10" size="2">
+                <input type="text" id="temp_end11" name="temp_end11" size="2">
+                <input type="text" id="temp_end12" name="temp_end12" size="2"> <br/>
+                </div>
+                <fieldset>
+                    <legend>
+                        <div class="form-group" align="center">
+                            <label>Test Carried <br/> Out By </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="test_carried_by" name="test_carried_by" size="5" required>
+                            <label>Position </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="position" name="position" size="5" required> &nbsp;&nbsp;
+                            <label>Signature </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="signature" name="signature" size="5" required>
+                             <label>Date </label>
+                            <input type="date" id="date" name="date" size="5" data-date="" data-date-format="DD MMMM YYYY" required>
+                        </div>
+                        <div align="right"><label for="comment">Comment</label>
+                            <textarea id="comment" style="background-color:#DBF3FA;" name="comment" placeholder="Write your comments..." cols="40" rows="5"></textarea>
+                        </div>
+                        <div align="right"><label for="comment">Comment</label>
+                            <p><input type=file name=file required>
+                            <!--<input type=submit value=Upload>-->
+                        </div>
+                    </legend>
+                </fieldset>
+                <div class="form-group" align="center">
+                    <input type="submit" value="Submit">
+                </div>
+
+            </legend>
+            </fieldset>
+      </div>
+    </form>
+   </body>
+</html>
