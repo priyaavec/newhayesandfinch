@@ -445,7 +445,7 @@ def uploadtodrive(filename):
     # )
     # y = json.loads(r.text)
     # file_location = "https://drive.google.com/file/d/" + y['id'] + "/view"
-    #get_gdrive_service()
+    get_gdrive_service()
     from pygdrive3 import service
 
     drive_service = service.DriveService('./client_secrets.json')
