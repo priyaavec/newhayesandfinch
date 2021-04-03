@@ -242,7 +242,8 @@ def get():
         signature = request.form['signature']
         date = request.form['date']
         comment = request.form['comment']
-
+        import time
+        start_time = time.time()
         file_location = uploadfile()
         result = [description, container_type, product_code, fragnance_type, customer, wax_type, production_quantity, sustainer_type,
                   time1, time2, time3, time4, time5, time6, time7, time8, time9, time10, time11, time12,
@@ -263,7 +264,7 @@ def get():
                   test_carried_by, position, signature, date, comment, file_location]
 
         recordcount = insertdata(result)
-
+        print("--- %s seconds ---" % (time.time() - start_time))
         return render_template('success.html', result=result, recordcount = recordcount, file_location = file_location)
     return render_template('form.html')
 
@@ -388,12 +389,10 @@ def uploadfile():
         return redirect(request.url)
     else:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
-        file = resize(file.filename)
+        fileupload = resize(file.filename)
+        #file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
         print("saved file successfully")
-        file_location = uploadtodrive(filename)
-        import time
-        time.sleep(5)
+        file_location = uploadtodrive(file.filename)
     return file_location
 
 import pickle
@@ -462,10 +461,11 @@ def uploadtodrive(filename):
 def resize(file):
     import PIL
     from PIL import Image
-    im = Image.open('./uploads/'+file)
-    width, height = im.size
-    im = im.resize((width // 2, height // 2))
-    im.save('./uploads/'+file)
+    image = Image.open('./uploads/'+file)
+    width, height = image.size
+    image = image.resize((width // 2, height // 2))
+    image.save('./uploads/'+file)
+    return image
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
