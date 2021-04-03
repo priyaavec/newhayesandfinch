@@ -24,11 +24,14 @@
 
 </head>
 <body>
-   <img src="{{url_for('static', filename='/img/hayes.png')}}", align="center" height="100" />
+   <img src="{{url_for('static', filename='/hayes.png')}}", align="center" height="100" />
+   <form class="form-horizontal">
+       <div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button></div>
+   </form>
+   <!--<div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button>-->
     <form action="/get" method=post enctype=multipart/form-data>
       <div class="form-group">
                 <h1 class="panel-title" align="center" style="font-weight: bold">DEVELOPMENT CONTAINER CANDLE BURN TEST</h1><br>
-                <div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button>
                 </div>
             <fieldset>
             <legend>
