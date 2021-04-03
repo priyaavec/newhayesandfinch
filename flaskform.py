@@ -455,8 +455,6 @@ def uploadtodrive(filename):
     drive_service = service.DriveService('./client_secrets.json')
     drive_service.auth()
     file = drive_service.upload_file(filename, './uploads/'+filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
-    import time
-    time.sleep(5)
     file_location = "https://drive.google.com/file/d/" + file + "/view"
     print(file_location)
     return file_location
@@ -470,4 +468,4 @@ def resize(file):
     im.save('./uploads/'+file)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=8080, debug=True)
+    app.run(port=8080, debug=True)
