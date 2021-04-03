@@ -1,1 +1,1 @@
-python flaskform.py
+web: sh setup.sh && python flaskform.py
