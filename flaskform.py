@@ -451,7 +451,7 @@ def uploadtodrive(filename):
 
     drive_service = service.DriveService('./client_secrets.json')
     drive_service.auth()
-    file = drive_service.upload_file(filename, './uploads/'+filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
+    file = drive_service.upload_file(filename, filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
     file_location = "https://drive.google.com/file/d/" + file + "/view"
     print(file_location)
     return file_location
