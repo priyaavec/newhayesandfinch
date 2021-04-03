@@ -458,7 +458,8 @@ def uploadtodrive(filename):
 
 def resize(file):
     import PIL
-    im = PIL.Image.open('./uploads/'+file)
+    from PIL import Image
+    im = Image.open('./uploads/'+file)
     width, height = im.size
     im = im.resize((width // 2, height // 2))
     im.save('./uploads/'+file)
