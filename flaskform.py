@@ -387,9 +387,9 @@ def uploadfile():
         return redirect(request.url)
     else:
         filename = secure_filename(file.filename)
-        file = resize(file.filename)
-        file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
-        print("saved file successfully")
+        # file = resize(file.filename)
+        # file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
+        # print("saved file successfully")
         file_location = uploadtodrive(filename)
     return file_location
 
