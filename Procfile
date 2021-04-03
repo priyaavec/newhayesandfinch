@@ -1,1 +1,1 @@
-web: gunicorn flaskform:app --graceful-timeout 30
+web: gunicorn flaskform:app --timeout 10 --graceful-timeout 30 --preload
