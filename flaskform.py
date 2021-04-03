@@ -388,9 +388,9 @@ def uploadfile():
         print('no filename')
         return redirect(request.url)
     else:
+        fileupload = resize(file)
         filename = secure_filename(file.filename)
-        fileupload = resize(file.filename)
-        #file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
+        fileupload.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
         print("saved file successfully")
         file_location = uploadtodrive(file.filename)
     return file_location
@@ -461,10 +461,10 @@ def uploadtodrive(filename):
 def resize(file):
     import PIL
     from PIL import Image
-    image = Image.open('./uploads/'+file)
+    image = Image.open(file)
     width, height = image.size
     image = image.resize((width // 2, height // 2))
-    image.save('./uploads/'+file)
+    #image.save('./uploads/'+file)
     return image
 
 if __name__ == "__main__":
