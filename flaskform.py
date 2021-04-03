@@ -387,6 +387,7 @@ def uploadfile():
         return redirect(request.url)
     else:
         filename = secure_filename(file.filename)
+        file = resize(file.filename)
         file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
         print("saved file successfully")
         file_location = uploadtodrive(filename)
@@ -455,6 +456,16 @@ def uploadtodrive(filename):
     print(file_location)
     return file_location
 
+def resize(file):
+    from PIL import Image
+
+    image = Image.open(file)
+    new_image = image.resize((150, 100))
+    new_image.save(file)
+
+    print(image.size)  # Output: (1920, 1280)
+    print(new_image.size)  # Output: (400, 400)
+    return new_image
 
 if __name__ == "__main__":
     app.run(port=5002, debug=True)
