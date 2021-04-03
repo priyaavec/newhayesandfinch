@@ -387,9 +387,9 @@ def uploadfile():
         return redirect(request.url)
     else:
         filename = secure_filename(file.filename)
-        # file = resize(file.filename)
-        # file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
-        # print("saved file successfully")
+        file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
+        file = resize(file.filename)
+        print("saved file successfully")
         file_location = uploadtodrive(filename)
     return file_location
 
@@ -451,21 +451,17 @@ def uploadtodrive(filename):
 
     drive_service = service.DriveService('./client_secrets.json')
     drive_service.auth()
-    file = drive_service.upload_file(filename, filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
+    file = drive_service.upload_file(filename, './uploads/'+filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
     file_location = "https://drive.google.com/file/d/" + file + "/view"
     print(file_location)
     return file_location
 
 def resize(file):
-    from PIL import Image
-
-    image = Image.open(file)
-    new_image = image.resize((150, 100))
-    new_image.save(file)
-
-    print(image.size)  # Output: (1920, 1280)
-    print(new_image.size)  # Output: (400, 400)
-    return new_image
+    import PIL
+    im = PIL.Image.open('./uploads/'+file)
+    width, height = im.size
+    im = im.resize((width // 2, height // 2))
+    im.save('./uploads/'+file)
 
 if __name__ == "__main__":
     app.run(port=5002, debug=True)
