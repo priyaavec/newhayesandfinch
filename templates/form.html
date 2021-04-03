@@ -1,471 +1,330 @@
-import os
-from werkzeug.utils import secure_filename
-from flask import Flask,flash,request,redirect, url_for, send_file,render_template
-import datetime
-from datetime import datetime
-import json
-import gspread
-import numpy as np
-from pandas import DataFrame
-from oauth2client.service_account import ServiceAccountCredentials
-UPLOAD_FOLDER = 'uploads/'
-app = Flask(__name__, template_folder='templates')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>HAYES AND FINCH</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        input[type=text] {
+         background-color: #DBF3FA;
+        }
+        form {
 
-@app.route('/')
-def form():
-    return render_template('form.html')
+        }
+        label {
+          display: inline-block;
+          width: 200px;
+        }
+        input {
+          display: inline-block;
+        }
+    </style>
 
-@app.route('/get', methods=['GET', 'POST'])
-def get():
-    if request.method == 'POST':
-        description = request.form['description']
-        container_type = request.form['container_type']
-        product_code = request.form['product_code']
-        fragnance_type = request.form['fragnance_type']
-        customer = request.form['customer']
-        wax_type = request.form['wax_type']
-        production_quantity = request.form['production_quantity']
-        sustainer_type = request.form['sustainer_type']
+</head>
+<body>
+   <img src="{{url_for('static', filename='/hayes.png')}}", align="center" height="100" />
+   <form class="form-horizontal">
+       <div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button></div>
+   </form>
+   <!--<div class="form-group" align="right"><button class="btn btn-primary" formaction="show_data" style="height:50px;width:130px">Show all records</button>-->
+    <form action="/get" method=post enctype=multipart/form-data>
+      <div class="form-group">
+                <h1 class="panel-title" align="center" style="font-weight: bold">DEVELOPMENT CONTAINER CANDLE BURN TEST</h1><br>
+                </div>
+            <fieldset>
+            <legend>
+                <div class="container" align="center">
+                <label for="DESCRIPTION">DESCRIPTION</label>
+                <input type="text" id="description" name="description" required>
+                <label for="CONTAINER_TYPE">CONTAINER TYPE</label>
+                <input type="text" id="container_type" name="container_type" required><br/>
+                <label for="PRODUCT_CODE">PRODUCT CODE</label>
+                <input type="text" id="product_code" name="product_code" required>&nbsp;&nbsp;
+                <label>FRAGRANCE <br/> TYPE+%</label>
+                <input type="text" id="fragnance_type" name="fragnance_type" required><br/>
+                <label for="CUSTOMER">CUSTOMER</label>
+                <input type="text" id="customer" name="customer" required>&nbsp;&nbsp;&nbsp;
+                <label for="WAX_TYPE">WAX TYPE</label>
+                <input type="text" id="wax_type" name="wax_type" required><br/>
+                <label>PRODUCTION QTY</label>
+                <input type="text" id="production_quantity" name="production_quantity" required>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label for="SUSTAINER_TYPE">SUSTAINER TYPE</label>
+                <input type="text" id="sustainer_type" name="sustainer_type" required><br/>
+                </div>
+            </legend>
+            </fieldset>
+          <fieldset>
+            <legend>
+                <div class="form-group" align="center">
+                <label>Time</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="time1" name="time1" size="2">
+                <input type="text" id="time2" name="time2" size="2">
+                <input type="text" id="time3" name="time3" size="2">
+                <input type="text" id="time4" name="time4" size="2">
+                <input type="text" id="time5" name="time5" size="2">
+                <input type="text" id="time6" name="time6" size="2">
+                <input type="text" id="time7" name="time7" size="2">
+                <input type="text" id="time8" name="time8" size="2">
+                <input type="text" id="time9" name="time9" size="2">
+                <input type="text" id="time10" name="time10" size="2">
+                <input type="text" id="time11" name="time11" size="2">
+                <input type="text" id="time12" name="time12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Wick</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input style="background-color:#DEDEDE;" type="text" id="0HR" value="0HR" readonly="readonly" size="2">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="4HR" value="4HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="8HR" value="8HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="12HR" value="12HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="16HR" value="16HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="20HR" value="20HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="24HR" value="24HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="28HR" value="28HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="32HR" value="32HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="36HR" value="36HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="40HR" value="40HR" readonly="readonly">
+                <input style="background-color:#DEDEDE;" type="text" size="2" id="TBH" value="TBH" readonly="readonly"><br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Flame  <br/>Height</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="flame1" name="flame1" size="2">
+                <input type="text" id="flame2" name="flame2" size="2">
+                <input type="text" id="flame3" name="flame3" size="2">
+                <input type="text" id="flame4" name="flame4" size="2">
+                <input type="text" id="flame5" name="flame5" size="2">
+                <input type="text" id="flame6" name="flame6" size="2">
+                <input type="text" id="flame7" name="flame7" size="2">
+                <input type="text" id="flame8" name="flame8" size="2">
+                <input type="text" id="flame9" name="flame9" size="2">
+                <input type="text" id="flame10" name="flame10" size="2">
+                <input type="text" id="flame11" name="flame11" size="2">
+                <input type="text" id="flame12" name="flame12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Below  <br/>Tolerance</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="tolerance1" name="tolerance1" size="2">
+                <input type="text" id="tolerance2" name="tolerance2" size="2">
+                <input type="text" id="tolerance3" name="tolerance3" size="2">
+                <input type="text" id="tolerance4" name="tolerance4" size="2">
+                <input type="text" id="tolerance5" name="tolerance5" size="2">
+                <input type="text" id="tolerance6" name="tolerance6" size="2">
+                <input type="text" id="tolerance7" name="tolerance7" size="2">
+                <input type="text" id="tolerance8" name="tolerance8" size="2">
+                <input type="text" id="tolerance9" name="tolerance9" size="2">
+                <input type="text" id="tolerance10" name="tolerance10" size="2">
+                <input type="text" id="tolerance11" name="tolerance11" size="2">
+                <input type="text" id="tolerance12" name="tolerance12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Acceptable<br/>: xxmm</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="accept1" name="accept1" size="2">
+                <input type="text" id="accept2" name="accept2" size="2">
+                <input type="text" id="accept3" name="accept3" size="2">
+                <input type="text" id="accept4" name="accept4" size="2">
+                <input type="text" id="accept5" name="accept5" size="2">
+                <input type="text" id="accept6" name="accept6" size="2">
+                <input type="text" id="accept7" name="accept7" size="2">
+                <input type="text" id="accept8" name="accept8" size="2">
+                <input type="text" id="accept9" name="accept9" size="2">
+                <input type="text" id="accept10" name="accept10" size="2">
+                <input type="text" id="accept11" name="accept11" size="2">
+                <input type="text" id="accept12" name="accept12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Above  <br/>Tolerance</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="above1" name="above1" size="2">
+                <input type="text" id="above2" name="above2" size="2">
+                <input type="text" id="above3" name="above3" size="2">
+                <input type="text" id="above4" name="above4" size="2">
+                <input type="text" id="above5" name="above5" size="2">
+                <input type="text" id="above6" name="above6" size="2">
+                <input type="text" id="above7" name="above7" size="2">
+                <input type="text" id="above8" name="above8" size="2">
+                <input type="text" id="above9" name="above9" size="2">
+                <input type="text" id="above10" name="above10" size="2">
+                <input type="text" id="above11" name="above11" size="2">
+                <input type="text" id="above12" name="above12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Wick <br/>Needs <br/> Trimming?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="trim1" name="trim1" size="2">
+                <input type="text" id="trim2" name="trim2" size="2">
+                <input type="text" id="trim3" name="trim3" size="2">
+                <input type="text" id="trim4" name="trim4" size="2">
+                <input type="text" id="trim5" name="trim5" size="2">
+                <input type="text" id="trim6" name="trim6" size="2">
+                <input type="text" id="trim7" name="trim7" size="2">
+                <input type="text" id="trim8" name="trim8" size="2">
+                <input type="text" id="trim9" name="trim9" size="2">
+                <input type="text" id="trim10" name="trim10" size="2">
+                <input type="text" id="trim11" name="trim11" size="2">
+                <input type="text" id="trim12" name="trim12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Evidence <br/> of <br/>Sooting?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="evidence1" name="evidence1" size="2">
+                <input type="text" id="evidence2" name="evidence2" size="2">
+                <input type="text" id="evidence3" name="evidence3" size="2">
+                <input type="text" id="evidence4" name="evidence4" size="2">
+                <input type="text" id="evidence5" name="evidence5" size="2">
+                <input type="text" id="evidence6" name="evidence6" size="2">
+                <input type="text" id="evidence7" name="evidence7" size="2">
+                <input type="text" id="evidence8" name="evidence8" size="2">
+                <input type="text" id="evidence9" name="evidence9" size="2">
+                <input type="text" id="evidence10" name="evidence10" size="2">
+                <input type="text" id="evidence11" name="evidence11" size="2">
+                <input type="text" id="evidence12" name="evidence12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Candle <br/> Tunnel? <br/> Y / N </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="tunnel1" name="tunnel1" size="2">
+                <input type="text" id="tunnel2" name="tunnel2" size="2">
+                <input type="text" id="tunnel3" name="tunnel3" size="2">
+                <input type="text" id="tunnel4" name="tunnel4" size="2">
+                <input type="text" id="tunnel5" name="tunnel5" size="2">
+                <input type="text" id="tunnel6" name="tunnel6" size="2">
+                <input type="text" id="tunnel7" name="tunnel7" size="2">
+                <input type="text" id="tunnel8" name="tunnel8" size="2">
+                <input type="text" id="tunnel9" name="tunnel9" size="2">
+                <input type="text" id="tunnel10" name="tunnel10" size="2">
+                <input type="text" id="tunnel11" name="tunnel11" size="2">
+                <input type="text" id="tunnel12" name="tunnel12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Clubbing <br/> MIN/ <br/>MAX</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="club1" name="club1" size="2">
+                <input type="text" id="club2" name="club2" size="2">
+                <input type="text" id="club3" name="club3" size="2">
+                <input type="text" id="club4" name="club4" size="2">
+                <input type="text" id="club5" name="club5" size="2">
+                <input type="text" id="club6" name="club6" size="2">
+                <input type="text" id="club7" name="club7" size="2">
+                <input type="text" id="club8" name="club8" size="2">
+                <input type="text" id="club9" name="club9" size="2">
+                <input type="text" id="club10" name="club10" size="2">
+                <input type="text" id="club11" name="club11" size="2">
+                <input type="text" id="club12" name="club12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Melt <br/> pool <br/>diameter</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="melt1" name="melt1" size="2">
+                <input type="text" id="melt2" name="melt2" size="2">
+                <input type="text" id="melt3" name="melt3" size="2">
+                <input type="text" id="melt4" name="melt4" size="2">
+                <input type="text" id="melt5" name="melt5" size="2">
+                <input type="text" id="melt6" name="melt6" size="2">
+                <input type="text" id="melt7" name="melt7" size="2">
+                <input type="text" id="melt8" name="melt8" size="2">
+                <input type="text" id="melt9" name="melt9" size="2">
+                <input type="text" id="melt10" name="melt10" size="2">
+                <input type="text" id="melt11" name="melt11" size="2">
+                <input type="text" id="melt12" name="melt12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Afterglow within <br/> Tolerance? <br/>(<20 secs <br/> after extinguishing)</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="afterglow1" name="afterglow1" size="2">
+                <input type="text" id="afterglow2" name="afterglow2" size="2">
+                <input type="text" id="afterglow3" name="afterglow3" size="2">
+                <input type="text" id="afterglow4" name="afterglow4" size="2">
+                <input type="text" id="afterglow5" name="afterglow5" size="2">
+                <input type="text" id="afterglow6" name="afterglow6" size="2">
+                <input type="text" id="afterglow7" name="afterglow7" size="2">
+                <input type="text" id="afterglow8" name="afterglow8" size="2">
+                <input type="text" id="afterglow9" name="afterglow9" size="2">
+                <input type="text" id="afterglow10" name="afterglow10" size="2">
+                <input type="text" id="afterglow11" name="afterglow11" size="2">
+                <input type="text" id="afterglow12" name="afterglow12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Candle <br/> Weight <br/> (g)?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="candle_weight1" name="candle_weight1" size="2">
+                <input type="text" id="candle_weight2" name="candle_weight2" size="2">
+                <input type="text" id="candle_weight3" name="candle_weight3" size="2">
+                <input type="text" id="candle_weight4" name="candle_weight4" size="2">
+                <input type="text" id="candle_weight5" name="candle_weight5" size="2">
+                <input type="text" id="candle_weight6" name="candle_weight6" size="2">
+                <input type="text" id="candle_weight7" name="candle_weight7" size="2">
+                <input type="text" id="candle_weight8" name="candle_weight8" size="2">
+                <input type="text" id="candle_weight9" name="candle_weight9" size="2">
+                <input type="text" id="candle_weight10" name="candle_weight10" size="2">
+                <input type="text" id="candle_weight11" name="candle_weight11" size="2">
+                <input type="text" id="candle_weight12" name="candle_weight12" size="2"> <br/>
+                </div>
+                 <div class="form-group" align="center">
+                <label>Burn <br/> Rate <br/> (g/hr)?</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="burn_rate1" name="burn_rate1" size="2">
+                <input type="text" id="burn_rate2" name="burn_rate2" size="2">
+                <input type="text" id="burn_rate3" name="burn_rate3" size="2">
+                <input type="text" id="burn_rate4" name="burn_rate4" size="2">
+                <input type="text" id="burn_rate5" name="burn_rate5" size="2">
+                <input type="text" id="burn_rate6" name="burn_rate6" size="2">
+                <input type="text" id="burn_rate7" name="burn_rate7" size="2">
+                <input type="text" id="burn_rate8" name="burn_rate8" size="2">
+                <input type="text" id="burn_rate9" name="burn_rate9" size="2">
+                <input type="text" id="burn_rate10" name="burn_rate10" size="2">
+                <input type="text" id="burn_rate11" name="burn_rate11" size="2">
+                <input type="text" id="burn_rate12" name="burn_rate12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Room Temp <br/> Start of test</label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="temp_start1" name="temp_start1" size="2">
+                <input type="text" id="temp_start2" name="temp_start2" size="2">
+                <input type="text" id="temp_start3" name="temp_start3" size="2">
+                <input type="text" id="temp_start4" name="temp_start4" size="2">
+                <input type="text" id="temp_start5" name="temp_start5" size="2">
+                <input type="text" id="temp_start6" name="temp_start6" size="2">
+                <input type="text" id="temp_start7" name="temp_start7" size="2">
+                <input type="text" id="temp_start8" name="temp_start8" size="2">
+                <input type="text" id="temp_start9" name="temp_start9" size="2">
+                <input type="text" id="temp_start10" name="temp_start10" size="2">
+                <input type="text" id="temp_start11" name="temp_start11" size="2">
+                <input type="text" id="temp_start12" name="temp_start12" size="2"> <br/>
+                </div>
+                <div class="form-group" align="center">
+                <label>Room Temp <br/> End of test </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="text" id="temp_end1" name="temp_end1" size="2">
+                <input type="text" id="temp_end2" name="temp_end2" size="2">
+                <input type="text" id="temp_end3" name="temp_end3" size="2">
+                <input type="text" id="temp_end4" name="temp_end4" size="2">
+                <input type="text" id="temp_end5" name="temp_end5" size="2">
+                <input type="text" id="temp_end6" name="temp_end6" size="2">
+                <input type="text" id="temp_end7" name="temp_end7" size="2">
+                <input type="text" id="temp_end8" name="temp_end8" size="2">
+                <input type="text" id="temp_end9" name="temp_end9" size="2">
+                <input type="text" id="temp_end10" name="temp_end10" size="2">
+                <input type="text" id="temp_end11" name="temp_end11" size="2">
+                <input type="text" id="temp_end12" name="temp_end12" size="2"> <br/>
+                </div>
+                <fieldset>
+                    <legend>
+                        <div class="form-group" align="center">
+                            <label>Test Carried <br/> Out By </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="test_carried_by" name="test_carried_by" size="5" required>
+                            <label>Position </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="position" name="position" size="5" required> &nbsp;&nbsp;
+                            <label>Signature </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <input type="text" id="signature" name="signature" size="5" required>
+                             <label>Date </label>
+                            <input type="date" id="date" name="date" size="5" data-date="" data-date-format="DD MMMM YYYY" required>
+                        </div>
+                        <div align="right"><label for="comment">Comment</label>
+                            <textarea id="comment" style="background-color:#DBF3FA;" name="comment" placeholder="Write your comments..." cols="40" rows="5"></textarea>
+                        </div>
+                        <div align="right"><label for="comment">Comment</label>
+                            <p><input type=file name=file required>
+                            <!--<input type=submit value=Upload>-->
+                        </div>
+                    </legend>
+                </fieldset>
+                <div class="form-group" align="center">
+                    <input type="submit" value="Submit">
+                </div>
 
-        time1 = request.form['time1']
-        time2 = request.form['time2']
-        time3 = request.form['time3']
-        time4 = request.form['time4']
-        time5 = request.form['time5']
-        time6 = request.form['time6']
-        time7 = request.form['time7']
-        time8 = request.form['time8']
-        time9 = request.form['time9']
-        time10 = request.form['time10']
-        time11 = request.form['time11']
-        time12 = request.form['time12']
-
-        flame1 = request.form['flame1']
-        flame2 = request.form['flame2']
-        flame3 = request.form['flame3']
-        flame4 = request.form['flame4']
-        flame5 = request.form['flame5']
-        flame6 = request.form['flame6']
-        flame7 = request.form['flame7']
-        flame8 = request.form['flame8']
-        flame9 = request.form['flame9']
-        flame10 = request.form['flame10']
-        flame11 = request.form['flame11']
-        flame12 = request.form['flame12']
-
-        tolerance1 = request.form['tolerance1']
-        tolerance2 = request.form['tolerance2']
-        tolerance3 = request.form['tolerance3']
-        tolerance4 = request.form['tolerance4']
-        tolerance5 = request.form['tolerance5']
-        tolerance6 = request.form['tolerance6']
-        tolerance7 = request.form['tolerance7']
-        tolerance8 = request.form['tolerance8']
-        tolerance9 = request.form['tolerance9']
-        tolerance10 = request.form['tolerance10']
-        tolerance11 = request.form['tolerance11']
-        tolerance12 = request.form['tolerance12']
-
-        accept1 = request.form['accept1']
-        accept2 = request.form['accept2']
-        accept3 = request.form['accept3']
-        accept4 = request.form['accept4']
-        accept5 = request.form['accept5']
-        accept6 = request.form['accept6']
-        accept7 = request.form['accept7']
-        accept8 = request.form['accept8']
-        accept9 = request.form['accept9']
-        accept10 = request.form['accept10']
-        accept11 = request.form['accept11']
-        accept12 = request.form['accept12']
-
-        above1 = request.form['above1']
-        above2 = request.form['above2']
-        above3 = request.form['above3']
-        above4 = request.form['above4']
-        above5 = request.form['above5']
-        above6 = request.form['above6']
-        above7 = request.form['above7']
-        above8 = request.form['above8']
-        above9 = request.form['above9']
-        above10 = request.form['above10']
-        above11 = request.form['above11']
-        above12 = request.form['above12']
-
-        trim1 = request.form['trim1']
-        trim2 = request.form['trim2']
-        trim3 = request.form['trim3']
-        trim4 = request.form['trim4']
-        trim5 = request.form['trim5']
-        trim6 = request.form['trim6']
-        trim7 = request.form['trim7']
-        trim8 = request.form['trim8']
-        trim9 = request.form['trim9']
-        trim10 = request.form['trim10']
-        trim11 = request.form['trim11']
-        trim12 = request.form['trim12']
-
-        evidence1 = request.form['evidence1']
-        evidence2 = request.form['evidence2']
-        evidence3 = request.form['evidence3']
-        evidence4 = request.form['evidence4']
-        evidence5 = request.form['evidence5']
-        evidence6 = request.form['evidence6']
-        evidence7 = request.form['evidence7']
-        evidence8 = request.form['evidence8']
-        evidence9 = request.form['evidence9']
-        evidence10 = request.form['evidence10']
-        evidence11 = request.form['evidence11']
-        evidence12 = request.form['evidence12']
-
-        evidence1 = request.form['evidence1']
-        evidence2 = request.form['evidence2']
-        evidence3 = request.form['evidence3']
-        evidence4 = request.form['evidence4']
-        evidence5 = request.form['evidence5']
-        evidence6 = request.form['evidence6']
-        evidence7 = request.form['evidence7']
-        evidence8 = request.form['evidence8']
-        evidence9 = request.form['evidence9']
-        evidence10 = request.form['evidence10']
-        evidence11 = request.form['evidence11']
-        evidence12 = request.form['evidence12']
-
-        tunnel1 = request.form['tunnel1']
-        tunnel2 = request.form['tunnel2']
-        tunnel3 = request.form['tunnel3']
-        tunnel4 = request.form['tunnel4']
-        tunnel5 = request.form['tunnel5']
-        tunnel6 = request.form['tunnel6']
-        tunnel7 = request.form['tunnel7']
-        tunnel8 = request.form['tunnel8']
-        tunnel9 = request.form['tunnel9']
-        tunnel10 = request.form['tunnel10']
-        tunnel11 = request.form['tunnel11']
-        tunnel12 = request.form['tunnel12']
-
-        club1 = request.form['club1']
-        club2 = request.form['club2']
-        club3 = request.form['club3']
-        club4 = request.form['club4']
-        club5 = request.form['club5']
-        club6 = request.form['club6']
-        club7 = request.form['club7']
-        club8 = request.form['club8']
-        club9 = request.form['club9']
-        club10 = request.form['club10']
-        club11 = request.form['club11']
-        club12 = request.form['club12']
-
-        melt1 = request.form['melt1']
-        melt2 = request.form['melt2']
-        melt3 = request.form['melt3']
-        melt4 = request.form['melt4']
-        melt5 = request.form['melt5']
-        melt6 = request.form['melt6']
-        melt7 = request.form['melt7']
-        melt8 = request.form['melt8']
-        melt9 = request.form['melt9']
-        melt10 = request.form['melt10']
-        melt11 = request.form['melt11']
-        melt12 = request.form['melt12']#
-
-        afterglow1 = request.form['afterglow1']
-        afterglow2 = request.form['afterglow2']
-        afterglow3 = request.form['afterglow3']
-        afterglow4 = request.form['afterglow4']
-        afterglow5 = request.form['afterglow5']
-        afterglow6 = request.form['afterglow6']
-        afterglow7 = request.form['afterglow7']
-        afterglow8 = request.form['afterglow8']
-        afterglow9 = request.form['afterglow9']
-        afterglow10 = request.form['afterglow10']
-        afterglow11 = request.form['afterglow11']
-        afterglow12 = request.form['afterglow12']
-
-        candle_weight1 = request.form['candle_weight1']
-        candle_weight2 = request.form['candle_weight2']
-        candle_weight3 = request.form['candle_weight3']
-        candle_weight4 = request.form['candle_weight4']
-        candle_weight5 = request.form['candle_weight5']
-        candle_weight6 = request.form['candle_weight6']
-        candle_weight7 = request.form['candle_weight7']
-        candle_weight8 = request.form['candle_weight8']
-        candle_weight9 = request.form['candle_weight9']
-        candle_weight10 = request.form['candle_weight10']
-        candle_weight11 = request.form['candle_weight11']
-        candle_weight12 = request.form['candle_weight12']
-
-        burn_rate1 = request.form['burn_rate1']
-        burn_rate2 = request.form['burn_rate2']
-        burn_rate3 = request.form['burn_rate3']
-        burn_rate4 = request.form['burn_rate4']
-        burn_rate5 = request.form['burn_rate5']
-        burn_rate6 = request.form['burn_rate6']
-        burn_rate7 = request.form['burn_rate7']
-        burn_rate8 = request.form['burn_rate8']
-        burn_rate9 = request.form['burn_rate9']
-        burn_rate10 = request.form['burn_rate10']
-        burn_rate11 = request.form['burn_rate11']
-        burn_rate12 = request.form['burn_rate12']
-
-        temp_start1 = request.form['temp_start1']
-        temp_start2 = request.form['temp_start2']
-        temp_start3 = request.form['temp_start3']
-        temp_start4 = request.form['temp_start4']
-        temp_start5 = request.form['temp_start5']
-        temp_start6 = request.form['temp_start6']
-        temp_start7 = request.form['temp_start7']
-        temp_start8 = request.form['temp_start8']
-        temp_start9 = request.form['temp_start9']
-        temp_start10 = request.form['temp_start10']
-        temp_start11 = request.form['temp_start11']
-        temp_start12 = request.form['temp_start12']
-
-        temp_end1 = request.form['temp_end1']
-        temp_end2 = request.form['temp_end2']
-        temp_end3 = request.form['temp_end3']
-        temp_end4 = request.form['temp_end4']
-        temp_end5 = request.form['temp_end5']
-        temp_end6 = request.form['temp_end6']
-        temp_end7 = request.form['temp_end7']
-        temp_end8 = request.form['temp_end8']
-        temp_end9 = request.form['temp_end9']
-        temp_end10 = request.form['temp_end10']
-        temp_end11 = request.form['temp_end11']
-        temp_end12 = request.form['temp_end12']
-
-        test_carried_by = request.form['test_carried_by']
-        position = request.form['position']
-        signature = request.form['signature']
-        date = request.form['date']
-        comment = request.form['comment']
-
-        file_location = uploadfile()
-        result = [description, container_type, product_code, fragnance_type, customer, wax_type, production_quantity, sustainer_type,
-                  time1, time2, time3, time4, time5, time6, time7, time8, time9, time10, time11, time12,
-                  flame1, flame2, flame3, flame4, flame5, flame6, flame7, flame8, flame9, flame10, flame11, flame12,
-                  tolerance1, tolerance2, tolerance3, tolerance4, tolerance5, tolerance6, tolerance7, tolerance8, tolerance9, tolerance10, tolerance11, tolerance12,
-                  accept1, accept2, accept3, accept4, accept5, accept6, accept7, accept8, accept9, accept10, accept11, accept12,
-                  above1, above2, above3, above4, above5, above6, above7, above8, above9, above10, above11, above12,
-                  trim1, trim2, trim3, trim4, trim5, trim6, trim7, trim8, trim9, trim10, trim11, trim12,
-                  evidence1, evidence2, evidence3, evidence4, evidence5, evidence6, evidence7, evidence8, evidence9, evidence10, evidence11, evidence12,
-                  tunnel1, tunnel2, tunnel3, tunnel4, tunnel5, tunnel6, tunnel7, tunnel8, tunnel9, tunnel10, tunnel1, tunnel2,
-                  club1, club2, club3, club4, club5, club6, club7, club8, club9, club10, club11, club12,
-                  melt1, melt2, melt3, melt4, melt5, melt6, melt7, melt8, melt9, melt10, melt11, melt12,
-                  afterglow1, afterglow2, afterglow3, afterglow4, afterglow5, afterglow6, afterglow7, afterglow8, afterglow9, afterglow10, afterglow11, afterglow12,
-                  candle_weight1, candle_weight2, candle_weight3, candle_weight4, candle_weight5, candle_weight6, candle_weight7, candle_weight8, candle_weight9, candle_weight10, candle_weight11, candle_weight12,
-                  burn_rate1, burn_rate2, burn_rate3, burn_rate4, burn_rate5, burn_rate6, burn_rate7, burn_rate8, burn_rate9, burn_rate10, burn_rate11, burn_rate12,
-                  temp_start1, temp_start2, temp_start3, temp_start4, temp_start5, temp_start6, temp_start7, temp_start8, temp_start9, temp_start10, temp_start11, temp_start12,
-                  temp_end1, temp_end2, temp_end3, temp_end4, temp_end5, temp_end6, temp_end7, temp_end8, temp_end9, temp_end10, temp_end11, temp_end12,
-                  test_carried_by, position, signature, date, comment, file_location]
-
-        recordcount = insertdata(result)
-
-        return render_template('success.html', result=result, recordcount = recordcount, file_location = file_location)
-    return render_template('form.html')
-
-
-@app.route('/show_data', methods=['GET', 'POST'])
-def show_data():
-    data_frame = showdata()
-    #datatype = type(data)
-    return render_template("show_data.html", tables=[data_frame.to_html(classes='data')], column_names=data_frame.columns.values, row_data=list(data_frame.values.tolist()), zip=zip)
-
-def connecttoexcel():
-    scope = [
-        'https://www.googleapis.com/auth/spreadsheets',
-        'https://www.googleapis.com/auth/drive'
-    ]
-    creds1 = ServiceAccountCredentials.from_json_keyfile_name("hayesandfinch.json", scope)
-    client = gspread.authorize(creds1)
-    sheet = client.open("hayes1").sheet1
-    return sheet
-
-def insertdata(result):
-    sheet = connecttoexcel()
-    data = sheet.get_all_records()
-    now = datetime.now()
-    dateandtime = now.strftime("%d/%m/%Y, %H:%M:%S")
-    print("date and time:", dateandtime)
-    result.insert(0, dateandtime)
-    sheet.insert_row(result, len(data)+2)
-    return len(data)
-
-def showdata():
-    sheet = connecttoexcel()
-    data = sheet.get_all_records()
-    data_df = DataFrame(data,
-                        columns=['DATE','DESCRIPTION', 'CONTAINER TYPE', 'PRODUCT CODE', 'FRAGRANCE TYPE + %', 'CUSTOMER',
-                                 'WAX TYPE', 'PRODUCTION QTY', 'SUSTAINER TYPE',
-                                 'start time', 'time after 4 HRS', 'time after 8 HRS', 'time after 12 HRS',
-                                 'time after 16 HRS', 'time after 20 HRS', 'time after 24 HRS',
-                                 'time after 28 HRS', 'time after 32 HRS', 'time after 36 HRS', 'time after 40 HRS',
-                                 'time TBH',
-                                 'Flame Height 0HR', 'Flame Height 4HR', 'Flame Height 8HR', 'Flame Height 12HR',
-                                 'Flame Height 16HR', 'Flame Height 20HR', 'Flame Height 24HR', 'Flame Height 28HR',
-                                 'Flame Height 32HR', 'Flame Height 36HR', 'Flame Height 40HR', 'Flame Height TBH',
-                                 'Below Tolerance 0HR', 'Below Tolerance 4HR', 'Below Tolerance 8HR',
-                                 'Below Tolerance 12HR', 'Below Tolerance 16HR', 'Below Tolerance 20HR',
-                                 'Below Tolerance 24HR', 'Below Tolerance 28HR', 'Below Tolerance 32HR',
-                                 'Below Tolerance 36HR', 'Below Tolerance 40HR', 'Below Tolerance TBH',
-                                 'Acceptable: xxmm 0HR','Acceptable: xxmm 4HR', 'Acceptable: xxmm 8HR', 'Acceptable: xxmm 12HR',
-                                 'Acceptable: xxmm 16HR','Acceptable: xxmm 20HR', 'Acceptable: xxmm 24HR',
-                                 'Acceptable: xxmm 28HR','Acceptable: xxmm 32HR', 'Acceptable: xxmm 36HR',
-                                 'Acceptable: xxmm 40HR','Acceptable: xxmm TBH',
-                                 'Above Tolerance 0HR','Above Tolerance 4HR', 'Above Tolerance 8HR',
-                                 'Above Tolerance 12HR', 'Above Tolerance 16HR', 'Above Tolerance 20HR',
-                                 'Above Tolerance 24HR', 'Above Tolerance 28HR', 'Above Tolerance 32HR',
-                                 'Above Tolerance 36HR', 'Above Tolerance 40HR', 'Above Tolerance TBH',
-                                 'Wick Needs Trimming? 0HR', 'Wick Needs Trimming? 4HR', 'Wick Needs Trimming? 8HR',
-                                 'Wick Needs Trimming? 12HR', 'Wick Needs Trimming? 16HR', 'Wick Needs Trimming? 20HR',
-                                 'Wick Needs Trimming? 24HR', 'Wick Needs Trimming? 28HR', 'Wick Needs Trimming? 32HR',
-                                 'Wick Needs Trimming? 36HR', 'Wick Needs Trimming? 40HR', 'Wick Needs Trimming? TBH',
-                                 'Evidence of Sooting? 0HR', 'Evidence of Sooting? 4HR', 'Evidence of Sooting? 8HR',
-                                 'Evidence of Sooting? 12HR', 'Evidence of Sooting? 16HR', 'Evidence of Sooting? 20HR',
-                                 'Evidence of Sooting? 24HR', 'Evidence of Sooting? 28HR', 'Evidence of Sooting? 32HR',
-                                 'Evidence of Sooting? 36HR', 'Evidence of Sooting? 40HR', 'Evidence of Sooting? TBH',
-                                 'Candle Tunnel? Y / N 0HR', 'Candle Tunnel? Y / N 4HR', 'Candle Tunnel? Y / N 8HR',
-                                 'Candle Tunnel? Y / N 12HR', 'Candle Tunnel? Y / N 16HR', 'Candle Tunnel? Y / N 20HR',
-                                 'Candle Tunnel? Y / N 24HR', 'Candle Tunnel? Y / N 28HR', 'Candle Tunnel? Y / N 28HR',
-                                 'Candle Tunnel? Y / N 32HR', 'Candle Tunnel? Y / N 36HR', 'Candle Tunnel? Y / N 40HR',
-                                 'Candle Tunnel? Y / N TBH',
-                                 'Clubbing MIN / MAX 0HR', 'Clubbing MIN / MAX 4HR', 'Clubbing MIN / MAX 8HR',
-                                 'Clubbing MIN / MAX 12HR', 'Clubbing MIN / MAX 16HR', 'Clubbing MIN / MAX 20HR',
-                                 'Clubbing MIN / MAX 24HR', 'Clubbing MIN / MAX 28HR', 'Clubbing MIN / MAX 32HR',
-                                 'Clubbing MIN / MAX 36HR', 'Clubbing MIN / MAX 40HR', 'Clubbing MIN / MAX TBH',
-                                 'Melt pool diameter 0HR', 'Melt pool diameter 4HR', 'Melt pool diameter 8HR',
-                                 'Melt pool diameter 12HR', 'Melt pool diameter 16HR', 'Melt pool diameter 20HR',
-                                 'Melt pool diameter 24HR', 'Melt pool diameter 28HR', 'Melt pool diameter 32HR',
-                                 'Melt pool diameter 36HR', 'Melt pool diameter 40HR', 'Melt pool diameter TBH',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 0HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 4HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 8HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 12HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 16HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 20HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 24HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 28HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 32HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 36HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) 40HR',
-                                 'Afterglow within Tolerance? (<20 secs after extinguishing) TBH',
-                                 'Candle Weight (g) 0HR', 'Candle Weight (g) 4HR', 'Candle Weight (g) 8HR',
-                                 'Candle Weight (g) 12HR', 'Candle Weight (g) 16HR', 'Candle Weight (g) 20HR',
-                                 'Candle Weight (g) 24HR', 'Candle Weight (g) 28HR', 'Candle Weight (g) 32HR',
-                                 'Candle Weight (g) 36HR', 'Candle Weight (g) 40HR', 'Candle Weight (g) TBH',
-                                 'Burn Rate (g/hr) 0HR', 'Burn Rate (g/hr) 4HR', 'Burn Rate (g/hr) 8HR',
-                                 'Burn Rate (g/hr) 12HR', 'Burn Rate (g/hr) 16HR', 'Burn Rate (g/hr) 20HR',
-                                 'Burn Rate (g/hr) 24HR', 'Burn Rate (g/hr) 28HR', 'Burn Rate (g/hr) 32HR',
-                                 'Burn Rate (g/hr) 36HR', 'Burn Rate (g/hr) 40HR', 'Burn Rate (g/hr) TBH',
-                                 'Room Temp Start of test 0HR', 'Room Temp Start of test 4HR',
-                                 'Room Temp Start of test 8HR', 'Room Temp Start of test 12HR',
-                                 'Room Temp Start of test 16HR', 'Room Temp Start of test 20HR',
-                                 'Room Temp Start of test 24HR', 'Room Temp Start of test 28HR',
-                                 'Room Temp Start of test 32HR', 'Room Temp Start of test 36HR',
-                                 'Room Temp Start of test 40HR', 'Room Temp Start of test TBH',
-                                 'Room Temp End of test 0HR', 'Room Temp End of test 4HR', 'Room Temp End of test 8HR',
-                                 'Room Temp End of test 12HR', 'Room Temp End of test 16HR',
-                                 'Room Temp End of test 20HR', 'Room Temp End of test 24HR',
-                                 'Room Temp End of test 28HR', 'Room Temp End of test 32HR',
-                                 'Room Temp End of test 36HR', 'Room Temp End of test TBH',
-                                 'Test Carried Out By', 'Position', 'Signature', 'Date', 'Comment', 'Candle Image'])
-    data_df.fillna('-')
-    data_df.replace(np.nan, '')
-    return data_df
-
-def uploadfile():
-    if 'file' not in request.files:
-        print('no file')
-        return redirect(request.url)
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submit a empty part without filename
-    if file.filename == '':
-        print('no filename')
-        return redirect(request.url)
-    else:
-        filename = secure_filename(file.filename)
-        file = resize(file.filename)
-        file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename))
-        print("saved file successfully")
-        file_location = uploadtodrive(filename)
-    return file_location
-
-import pickle
-import os
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-
-# If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly',
-          'https://www.googleapis.com/auth/drive.file']
-
-def get_gdrive_service():
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'client_secrets.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-    # return Google Drive API service
-    return build('drive', 'v3', credentials=creds)
-
-
-def uploadtodrive(filename):
-    # import json
-    # import requests
-    # headers = {
-    #     "Authorization": "Bearer ya29.a0AfH6SMB6XBKvN5U5Gtx5167K3GNWnyvDyAWLsguOFvB5rYgIKwysm9NwGLoAwarhNmOpMwftuBiti89UHIi6lFQDI3lRoE3L5u2O12-l-CdTrV-5lPl8eGKL56bh0EZOr41g-ogGLxRC4lllV7hEHvMbe9ln"}
-    # para = {
-    #     "name": filename,
-    #     "parents": ["1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE"]
-    # }
-    # files = {
-    #     'data': ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
-    #     'file': open("./uploads/"+filename, "rb")
-    # }
-    # r = requests.post(
-    #     "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
-    #     headers=headers,
-    #     files=files
-    # )
-    # y = json.loads(r.text)
-    # file_location = "https://drive.google.com/file/d/" + y['id'] + "/view"
-    #get_gdrive_service()
-    from pygdrive3 import service
-
-    drive_service = service.DriveService('./client_secrets.json')
-    drive_service.auth()
-    file = drive_service.upload_file(filename, './uploads/'+filename, "1sz_WI0MNEaHn5GPJxpg3rvyIrd6ujowE",mime_type="image/*")
-    file_location = "https://drive.google.com/file/d/" + file + "/view"
-    print(file_location)
-    return file_location
-
-def resize(file):
-    from PIL import Image
-
-    image = Image.open(file)
-    new_image = image.resize((150, 100))
-    new_image.save(file)
-
-    print(image.size)  # Output: (1920, 1280)
-    print(new_image.size)  # Output: (400, 400)
-    return new_image
-
-if __name__ == "__main__":
-    app.run(port=5002, debug=True)
+            </legend>
+            </fieldset>
+      </div>
+    </form>
+   </body>
+</html>
