@@ -10,3 +10,4 @@ pygdrive3==0.8.1
 google-auth-oauthlib==0.4.4
 pickleshare==0.7.5
 google-api-python-client
+Pillow==8.1.2
