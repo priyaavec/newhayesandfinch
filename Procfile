@@ -1,1 +1,1 @@
-web: gunicorn flaskform:app --timeout 10 --graceful-timeout 30 --preload
+web: gunicorn flaskform:app --timeout 15 --keep-alive 5 --log-level debug
